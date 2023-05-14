@@ -1,6 +1,6 @@
 const http = require("http");
 const express = require("express");
-const socketio = require("socket.io");
+// const socketio = require("socket.io");
 require("dotenv").config();
 const { UserModel } = require("./models/user.model")
 const { UserRouter } = require("./routes/user.routes");
@@ -13,10 +13,10 @@ const app = express();
 const { v4: uuidv4 } = require("uuid");
 const { githubRouter } = require("./Oauth/github")
 const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser");
+// const cookieParser = require("cookie-parser");
 // Render All Users
 
-app.use(cookieParser());
+// app.use(cookieParser());
 
 const cors = require("cors")
 const { connection } = require("./configs/db");
@@ -24,6 +24,10 @@ const { questionRouter } = require("./Router/question.router");
 const { formatmessage } = require("./utils/message")
 const { userjoin, getcurrentuser, userleave, getroomusers } = require("./utils/users")
 app.use(cors());
+
+app.get("/",(req,res)=>{
+    res.send("home page");
+})
 
 // app.use(cookieParser());
 app.use(express.json())
