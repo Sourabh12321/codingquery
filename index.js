@@ -52,7 +52,7 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 passport.use(new GoogleStrategy({
     clientID: process.env.google_client_id,
     clientSecret: process.env.google_client_secret,
-    callbackURL: "https://thunderous-alpaca-184d8d.netlify.app/auth/google/callback"
+    callbackURL: "https://jade-wicked-clownfish.cyclic.app/auth/google/callback"
 },
     async function  (accessToken, refreshToken, profile, cb) {
         let name =profile._json.name;
