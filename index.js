@@ -137,7 +137,7 @@ app.get("/auth/github", async (req, res) => {
                     expiresIn: "7h",
                 }
             );
-            res.redirect(`https://thunderous-alpaca-184d8d.netlify.app/frontend/topquestions?token=${tosendtoken}`)
+            res.redirect(`https://thunderous-alpaca-184d8d.netlify.app/frontend/topquestions?token=${tosendtoken}&name=${isUserpresent.name}`)
         } else {
             const userData = new UserModel({ name: user.name, email: user.email, password: user.password });
             await userData.save();
@@ -148,7 +148,7 @@ app.get("/auth/github", async (req, res) => {
                     expiresIn: "7h",
                 }
             );
-            res.redirect("https://thunderous-alpaca-184d8d.netlify.app/frontend/topquestions")
+            res.redirect(`https://thunderous-alpaca-184d8d.netlify.app/frontend/topquestions?token=${tosendtoken}&name=${user.name}`)
             // save the user details in the database here
             // res.send({
             //     msg: "Github authentication successful!",
