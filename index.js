@@ -52,7 +52,7 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 passport.use(new GoogleStrategy({
     clientID: process.env.google_client_id,
     clientSecret: process.env.google_client_secret,
-    callbackURL: "https://jade-wicked-clownfish.cyclic.app/auth/google/callback"
+    callbackURL: "https://thunderous-alpaca-184d8d.netlify.app/user/auth/google/callback"
 },
     async function  (accessToken, refreshToken, profile, cb) {
         let name =profile._json.name;
@@ -83,7 +83,7 @@ app.get('/user/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login',session:false }),
     function (req, res) {
         let user = req.user;
-        console.log(user);
+        
         const tosendtoken = jwt.sign(
             { email: isUserpresent.email },
             process.env.secret,
