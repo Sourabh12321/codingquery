@@ -52,7 +52,7 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 passport.use(new GoogleStrategy({
     clientID: process.env.google_client_id,
     clientSecret: process.env.google_client_secret,
-    callbackURL: "https://thunderous-alpaca-184d8d.netlify.app/user/auth/google/callback"
+    callbackURL: "https://thunderous-alpaca-184d8d.netlify.app/auth/google/callback"
 },
     async function  (accessToken, refreshToken, profile, cb) {
         let name =profile._json.name;
@@ -76,10 +76,10 @@ passport.use(new GoogleStrategy({
 
 
 
-app.get('/user/auth/google',
+app.get('/auth/google',
     passport.authenticate('google', { scope: ['profile','email'] }));
 
-app.get('/user/auth/google/callback',
+app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login',session:false }),
     function (req, res) {
         let user = req.user;
