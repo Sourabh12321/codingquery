@@ -13,10 +13,10 @@ const app = express();
 const { v4: uuidv4 } = require("uuid");
 const { githubRouter } = require("./Oauth/github")
 const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser");
+// const cookieParser = require("cookie-parser");
 // Render All Users
 
-app.use(cookieParser());
+// app.use(cookieParser());
 
 const cors = require("cors")
 const { connection } = require("./configs/db");
