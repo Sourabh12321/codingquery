@@ -1,6 +1,6 @@
 const http = require("http");
 const express = require("express");
-// const socketio = require("socket.io");
+const socketio = require("socket.io");
 require("dotenv").config();
 const { UserModel } = require("./models/user.model")
 const { UserRouter } = require("./routes/user.routes");
@@ -13,10 +13,10 @@ const app = express();
 const { v4: uuidv4 } = require("uuid");
 const { githubRouter } = require("./Oauth/github")
 const jwt = require("jsonwebtoken");
-// const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 // Render All Users
 
-// app.use(cookieParser());
+app.use(cookieParser());
 
 const cors = require("cors")
 const { connection } = require("./configs/db");
@@ -24,10 +24,6 @@ const { questionRouter } = require("./Router/question.router");
 const { formatmessage } = require("./utils/message")
 const { userjoin, getcurrentuser, userleave, getroomusers } = require("./utils/users")
 app.use(cors());
-
-app.get("/",(req,res)=>{
-    res.send("home page");
-})
 
 // app.use(cookieParser());
 app.use(express.json())
@@ -56,7 +52,7 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 passport.use(new GoogleStrategy({
     clientID: process.env.google_client_id,
     clientSecret: process.env.google_client_secret,
-    callbackURL: "https://thunderous-alpaca-184d8d.netlify.app/google/callback"
+    callbackURL: "https://thunderous-alpaca-184d8d.netlify.app/user/auth/google/callback"
 },
     async function  (accessToken, refreshToken, profile, cb) {
         let name =profile._json.name;
@@ -131,14 +127,21 @@ app.get("/auth/github", async (req, res) => {
             password: uuidv4(),
         };
         console.log(user);
-        const isUserpresent = await UserModel.find({ email: user.emailemail });
+        const isUserpresent = await UserModel.findOne({ email: user.email });
         console.log(isUserpresent + "data");
         if (isUserpresent) {
-            console.log("hero");
-            res.redirect("https://thunderous-alpaca-184d8d.netlify.app/")
+            const tosendtoken = jwt.sign(
+                { email: isUserpresent.email },
+                process.env.secret,
+                {
+                    expiresIn: "7h",
+                }
+            );
+            res.redirect(`https://thunderous-alpaca-184d8d.netlify.app/frontend/topquestions?token=${tosendtoken}`)
         } else {
             const userData = new UserModel({ name: user.name, email: user.email, password: user.password });
             await userData.save();
+            
             const tosendtoken = jwt.sign(
                 { email: user.email },
                 process.env.secret,
@@ -146,7 +149,7 @@ app.get("/auth/github", async (req, res) => {
                     expiresIn: "7h",
                 }
             );
-            res.redirect("https://thunderous-alpaca-184d8d.netlify.app/")
+            res.redirect(`https://thunderous-alpaca-184d8d.netlify.app/frontend/topquestions?token=${tosendtoken}`)
             // save the user details in the database here
             // res.send({
             //     msg: "Github authentication successful!",
