@@ -1,6 +1,6 @@
 const http = require("http");
 const express = require("express");
-const socketio = require("socket.io");
+// const socketio = require("socket.io");
 require("dotenv").config();
 const { UserModel } = require("./models/user.model")
 const { UserRouter } = require("./routes/user.routes");
@@ -141,7 +141,6 @@ app.get("/auth/github", async (req, res) => {
         } else {
             const userData = new UserModel({ name: user.name, email: user.email, password: user.password });
             await userData.save();
-            
             const tosendtoken = jwt.sign(
                 { email: user.email },
                 process.env.secret,
@@ -149,7 +148,7 @@ app.get("/auth/github", async (req, res) => {
                     expiresIn: "7h",
                 }
             );
-            res.redirect(`https://thunderous-alpaca-184d8d.netlify.app/frontend/topquestions?token=${tosendtoken}`)
+            res.redirect("https://thunderous-alpaca-184d8d.netlify.app/frontend/topquestions")
             // save the user details in the database here
             // res.send({
             //     msg: "Github authentication successful!",
