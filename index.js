@@ -88,7 +88,7 @@ app.get('/auth/google/callback',
         let user = req.user;
         
         const tosendtoken = jwt.sign(
-            { email: isUserpresent.email },
+            { email: user.email },
             process.env.secret,
             {
                 expiresIn: "7h",
