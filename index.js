@@ -52,7 +52,7 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 passport.use(new GoogleStrategy({
     clientID: process.env.google_client_id,
     clientSecret: process.env.google_client_secret,
-    callbackURL: "https://thunderous-alpaca-184d8d.netlify.app/user/auth/google/callback"
+    callbackURL: "https://jade-wicked-clownfish.cyclic.app/auth/google/callback"
 },
     async function  (accessToken, refreshToken, profile, cb) {
         let name =profile._json.name;
@@ -84,7 +84,14 @@ app.get('/user/auth/google/callback',
     function (req, res) {
         let user = req.user;
         console.log(user);
-        res.redirect("https://thunderous-alpaca-184d8d.netlify.app/")
+        const tosendtoken = jwt.sign(
+            { email: isUserpresent.email },
+            process.env.secret,
+            {
+                expiresIn: "7h",
+            }
+        );
+        res.redirect(`https://thunderous-alpaca-184d8d.netlify.app/frontend/topquestions?token=${tosendtoken}&Name=${user.name}`)
         // Successful authentication, redirect home.
         // res.redirect('/');
     });
