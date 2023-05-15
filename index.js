@@ -31,6 +31,9 @@ const httpServer = http.createServer(app);
 
 app.use(express.static(__dirname + '/frontend'));
 
+app.get("/",(req,res)=>{
+    res.send("home page");
+})
 
 //redis
 const redisClient = redis.createClient({
